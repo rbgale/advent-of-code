@@ -1,56 +1,26 @@
-cmake_minimum_required(VERSION 4.2.1)
-
-#set(CMAKE_SUPPRESS_DEVELOPER_WARNINGS ON CACHE BOOL "" FORCE)
-
-set(LLVM_PREFIX "/opt/homebrew/Cellar/llvm/21.1.8")
-add_link_options("-L${LLVM_PREFIX}/lib/c++" "-Wl,-rpath,${LLVM_PREFIX}/lib/c++")
+cmake_minimum_required(VERSION 3.5)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-#set(CMAKE_CXX_STDLIB_MODULES_JSON "/opt/homebrew/Cellar/llvm/21.1.8/lib/c++/libc++.modules.json")
-set(CMAKE_EXPERIMENTAL_CXX_IMPORT_STD "d0edc3af-4c50-42ea-a356-e2862fe7a444")
-set(CMAKE_CXX_MODULE_STD ON)
 
-project(aoc_2025 CXX)
-
-#add_library(aoc_common STATIC common.cpp)
+if(APPLE)
+    execute_process(
+            COMMAND brew --prefix llvm
+            OUTPUT_VARIABLE LLVM_PREFIX
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    add_link_options(
+            "-L${LLVM_PREFIX}/lib/c++"
+            "-Wl,-rpath,${LLVM_PREFIX}/lib/c++"
+    )
+endif()
 
 add_compile_options(-stdlib=libc++)
 add_link_options(-stdlib=libc++)
 
-add_executable(day1.1 day1/day1.1.cpp)
-add_executable(day1.2 day1/day1.2.cpp)
+project(advent-of-code CXX)
 
-add_executable(day2.1 day2/day2.1.cpp)
-add_executable(day2.2 day2/day2.2.cpp)
+add_subdirectory(utils)
+add_subdirectory(2025)
 
-add_executable(day3.1 day3/day3.1.cpp)
-add_executable(day3.2 day3/day3.2.cpp)
-
-add_executable(day4.1 day4/day4.1.cpp)
-add_executable(day4.2 day4/day4.2.cpp)
-
-add_executable(day5.1 day5/day5.1.cpp)
-add_executable(day5.2 day5/day5.2.cpp)
-
-add_executable(day6.1 day6/day6.1.cpp)
-add_executable(day6.2 day6/day6.2.cpp)
-
-add_executable(day7.1 day7/day7.1.cpp)
-add_executable(day7.2 day7/day7.2.cpp)
-
-add_executable(day8.1 day8/day8.1.cpp)
-add_executable(day8.2 day8/day8.2.cpp)
-
-add_executable(day9.1 day9/day9.1.cpp)
-add_executable(day9.2 day9/day9.2.cpp)
-
-add_executable(day10.1 day10/day10.1.cpp)
-add_executable(day10.2 day10/day10.2.cpp)
-
-add_executable(day11.1 day11/day11.1.cpp)
-add_executable(day11.2 day11/day11.2.cpp)
-
-add_executable(day12 day12/day12.cpp)
-#target_link_libraries(day1 PRIVATE aoc_common)
