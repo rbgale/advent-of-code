@@ -22,13 +22,24 @@ mkdir -p "$DAY_DIRECTORY"
 
 cat > "$DAY_DIRECTORY/part1.cpp" << 'EOF'
 #include <print>
+#include <string>
+#include <vector>
 #include "aoc.h"
 
-auto main() -> int {
+auto parse_input() -> std::vector<std::string> {
     auto f{AOC_INPUT()};
+    std::vector<std::string> lines{};
+    std::string line{};
+    while (std::getline(f, line))
+        lines.push_back(line);
+
+    return lines;
+}
+
+auto main() -> int {
+    const auto lines{parse_input()};
 
     std::println("{}", 0);
-    return 0;
 }
 EOF
 
