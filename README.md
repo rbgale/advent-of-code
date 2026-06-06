@@ -16,8 +16,7 @@ advent-of-code/
 ├── 2025/
 │   ├── day01/
 │   │   ├── part1.cpp
-│   │   ├── part2.cpp
-│   │   └── input.txt
+│   │   └── part2.cpp
 │   └── ...
 └── ...
 ```
@@ -35,6 +34,40 @@ cmake -B build -DCMAKE_CXX_COMPILER=$(brew --prefix llvm)/bin/clang++
 ```bash
 cmake -B build
 ```
+
+
+## Inputs
+
+My inputs wouldn't be too useful to you (and aren't supposed to be uploaded, per the [guidelines](https://adventofcode.com/about)); to use your inputs, set up a session token and use the provided scripts.
+
+**Getting your session token:**
+
+Log in to [adventofcode.com](https://adventofcode.com), then:
+- **Firefox:** DevTools (`Cmd+Option+I`/`F12`) > Storage > Cookies > https://adventofcode.com > copy the session value
+- **Chrome:** DevTools (`Cmd+Option+I`/`F12`) > Application > Cookies > https://adventofcode.com > copy the session value
+
+Store it in your project root:
+```bash
+echo "YOUR_TOKEN" > .aoc_session
+```
+Or temporarily as an environment variable:
+```bash
+export AOC_SESSION="YOUR_TOKEN"
+```
+
+**Fetching inputs:**
+
+```
+./fetch-inputs.sh [YEAR [DAY]]
+```
+
+**Clearing inputs:**
+
+```
+./clear-inputs.sh [YEAR [DAY]]
+```
+
+Omitting arguments widens the scope: no `DAY` fetches/clears all days in the year; no `YEAR` fetches/clears all years.
 
 
 ## Building
@@ -71,20 +104,4 @@ I was repeating the same process to add new days to my solutions and fetching th
 ./new-day.sh YEAR DAY
 ```
 
-It creates `part1.cpp` and `part2.cpp` and fetches `input.txt` from [adventofcode.com](https://adventofcode.com) if a session token is set up (see below).
-
-## Getting your session token
-
-Log in to [adventofcode.com](https://adventofcode.com), then:
-- **Firefox:** DevTools (`Cmd+Option+I`/`F12`) > Storage > Cookies > https://adventofcode.com > copy the session value
-- **Chrome:** DevTools (`Cmd+Option+I`/`F12`) > Application > Cookies > https://adventofcode.com > copy the session value
-
-Store it in your project root:
-```bash
-echo "YOUR_TOKEN" > .aoc_session
-```
-Or temporarily as an environment variable:
-```bash
-export AOC_SESSION="YOUR_TOKEN"
-```
-
+It creates `part1.cpp` and `part2.cpp` and fetches `input.txt` from [adventofcode.com](https://adventofcode.com) if a session token is set up.
