@@ -16,11 +16,28 @@ if(APPLE)
     )
 endif()
 
-add_compile_options(-stdlib=libc++)
-add_link_options(-stdlib=libc++)
-
 project(advent-of-code CXX)
 
 add_subdirectory(utils)
-add_subdirectory(2025)
 
+file(GLOB YEAR_DIRECTORIES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/[0-9][0-9][0-9][0-9]")
+
+foreach(year_directory ${YEAR_DIRECTORIES})
+    get_filename_component(year_name ${year_directory} NAME)
+    file(GLOB DAY_DIRECTORIES CONFIGURE_DEPENDS "${year_directory}/day*")
+
+    foreach(day_directory ${DAY_DIRECTORIES})
+        get_filename_component(day_name ${day_directory} NAME)
+
+        foreach(part part1 part2)
+            set(source "${day_directory}/${part}.cpp")
+            if(NOT EXISTS ${source})
+                continue()
+            endif()
+
+            set(target "${year_name}_${day_name}_${part}")
+            add_executable(${target} ${source})
+            target_link_libraries(${target} PRIVATE utils)
+        endforeach()
+    endforeach()
+endforeach()

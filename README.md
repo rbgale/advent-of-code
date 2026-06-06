@@ -23,31 +23,68 @@ advent-of-code/
 ```
 
 
+## Setup
+
+**macOS:** install brew LLVM and point CMake at it:
+```bash
+brew install llvm
+cmake -B build -DCMAKE_CXX_COMPILER=$(brew --prefix llvm)/bin/clang++
+```
+
+**Linux:** GCC 13+ or Clang 17+:
+```bash
+cmake -B build
+```
+
+
 ## Building
 
-**Prerequisites (macOS):**
-
-Install LLVM with Homebrew: `brew install llvm`
-
-**One part:**
+**One part:** (e.g. part 1 of day 1 of 2025)
 ```bash
 cmake --build build --target 2025_day01_part1
 ```
 
 **Everything:**
 ```bash
-cmake -B build && cmake --build build
+cmake --build build
 ```
 
 
 ## Running
 
-**One part:**
+**One part:** (e.g. part 1 of day 1 of 2025)
 ```bash
-./build/2025/2025_day01_part1
+./build/2025_day01_part1
 ```
 
 **Everything:**
 ```bash
-find build -name "2025_day*" -perm +111 | sort | xargs -I{} sh -c 'echo "{}:" && {}'
+find build -maxdepth 1 -name "*_day*_part*" | sort | xargs -I{} sh -c 'echo "{}:" && {}'
 ```
+
+
+## Adding a new day
+
+I was repeating the same process to add new days to my solutions and fetching the input a lot; so, I made a script:
+
+```bash
+./new-day.sh YEAR DAY
+```
+
+It creates `part1.cpp` and `part2.cpp` and fetches `input.txt` from [adventofcode.com](https://adventofcode.com) if a session token is set up (see below).
+
+## Getting your session token
+
+Log in to [adventofcode.com](https://adventofcode.com), then:
+- **Firefox:** DevTools (`Cmd+Option+I`/`F12`) > Storage > Cookies > https://adventofcode.com > copy the session value
+- **Chrome:** DevTools (`Cmd+Option+I`/`F12`) > Application > Cookies > https://adventofcode.com > copy the session value
+
+Store it in your project root:
+```bash
+echo "YOUR_TOKEN" > .aoc_session
+```
+Or temporarily as an environment variable:
+```bash
+export AOC_SESSION="YOUR_TOKEN"
+```
+

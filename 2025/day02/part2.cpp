@@ -3,7 +3,6 @@
 #include <print>
 #include <ranges>
 #include <vector>
-#include <__ranges/iota_view.h>
 #include "aoc.h"
 
 [[nodiscard]] auto get_ids() -> std::vector<std::pair<long, long>> {
