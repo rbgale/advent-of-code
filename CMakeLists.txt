@@ -18,6 +18,8 @@ endif()
 
 project(advent-of-code CXX)
 
+find_package(OpenSSL REQUIRED)
+
 add_subdirectory(utils)
 
 file(GLOB YEAR_DIRECTORIES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/[0-9][0-9][0-9][0-9]")
@@ -38,6 +40,11 @@ foreach(year_directory ${YEAR_DIRECTORIES})
             set(target "${year_name}_${day_name}_${part}")
             add_executable(${target} ${source})
             target_link_libraries(${target} PRIVATE utils)
+
+            file(READ ${source} source_contents)
+            if(source_contents MATCHES "openssl/md5\\.h")
+                target_link_libraries(${target} PRIVATE OpenSSL::Crypto)
+            endif()
         endforeach()
     endforeach()
 endforeach()
