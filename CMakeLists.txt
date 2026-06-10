@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -18,7 +18,7 @@ endif()
 
 project(advent-of-code CXX)
 
-find_package(OpenSSL REQUIRED)
+find_package(OpenSSL)
 
 add_subdirectory(utils)
 
@@ -37,11 +37,15 @@ foreach(year_directory ${YEAR_DIRECTORIES})
                 continue()
             endif()
 
+            file(READ ${source} source_contents)
+            if(source_contents MATCHES "openssl/md5\\.h" AND NOT OpenSSL_FOUND)
+                continue()
+            endif()
+
             set(target "${year_name}_${day_name}_${part}")
             add_executable(${target} ${source})
             target_link_libraries(${target} PRIVATE utils)
 
-            file(READ ${source} source_contents)
             if(source_contents MATCHES "openssl/md5\\.h")
                 target_link_libraries(${target} PRIVATE OpenSSL::Crypto)
             endif()

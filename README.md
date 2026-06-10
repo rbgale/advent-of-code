@@ -24,15 +24,18 @@ advent-of-code/
 
 ## Setup
 
-**macOS:** install brew LLVM and point CMake at it:
+CMake 3.10+ is required. OpenSSL is required for the 2015 day 4 puzzle.
+
+**macOS:** install brew LLVM and point CMake at it (Apple Clang lacks some newer feature support):
 ```bash
-brew install llvm
-cmake -B build -DCMAKE_CXX_COMPILER=$(brew --prefix llvm)/bin/clang++
+brew install llvm # optionally install openssl
+cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=$(brew --prefix llvm)/bin/clang++
 ```
 
-**Linux:** GCC 13+ or Clang 17+:
+**Linux:** GCC 14+ or Clang 18+ (any C++23 compiler):
 ```bash
-cmake -B build
+# optionally install libssl-dev (name varies by distro) for openSSL support
+cmake -B build -DCMAKE_BUILD_TYPE=Release
 ```
 
 
@@ -67,7 +70,7 @@ export AOC_SESSION="YOUR_TOKEN"
 ./clear-inputs.sh [YEAR [DAY]]
 ```
 
-Omitting arguments widens the scope: no `DAY` fetches/clears all days in the year; no `YEAR` fetches/clears all years.
+Omitting arguments increases the scope: no `DAY` fetches/clears all days in the year; no `YEAR` fetches/clears all years.
 
 
 ## Building
