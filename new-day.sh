@@ -10,7 +10,7 @@ DAY_DIRECTORY="$YEAR_DIRECTORY/day$DAY_PADDED"
 
 if [[ ! -d "$YEAR_DIRECTORY" ]]; then
     mkdir -p "$YEAR_DIRECTORY"
-    echo "Year $YEAR not found. Created $YEAR/"
+    echo "Created directory $YEAR/"
 fi
 
 if [[ -d "$DAY_DIRECTORY" ]]; then
@@ -47,4 +47,5 @@ cp "$DAY_DIRECTORY/part1.cpp" "$DAY_DIRECTORY/part2.cpp"
 
 "$ROOT/fetch-inputs.sh" "$YEAR" "$DAY" || true
 
-echo "Done: created $DAY_DIRECTORY"
+echo "Created $(basename "$ROOT")/$YEAR/day$DAY_PADDED."
+echo "Get instructions at https://adventofcode.com/${YEAR}/day/${DAY}."

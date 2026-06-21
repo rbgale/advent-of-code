@@ -44,7 +44,7 @@ fetch_input() {
         return
     fi
 
-    echo "Fetched: $year/day$day_padded/input.txt"
+    echo "Fetched $year/day$day_padded/input.txt."
 }
 
 shopt -s nullglob
