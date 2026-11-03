@@ -1,0 +1,28 @@
+name: Update README stars
+
+on:
+  push:
+    branches: [main]
+    paths: ['20*/**']
+  workflow_dispatch:
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Update stars table
+        run: python3 .github/scripts/update_readme_stars.py
+        env:
+          AOC_SESSION: ${{ secrets.AOC_SESSION }}
+          BEFORE_SHA: ${{ github.event.before }}
+
+      - uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: Update README stars
+          file_pattern: README.md
