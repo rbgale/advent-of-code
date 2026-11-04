@@ -62,7 +62,7 @@ Store it in your project root:
 
 ```bash
 echo "YOUR_TOKEN" > .aoc_session
-```a
+```
 
 Or temporarily as an environment variable:
 
