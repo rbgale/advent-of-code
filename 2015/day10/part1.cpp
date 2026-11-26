@@ -1,7 +1,9 @@
-#include <iostream>
 #include <print>
-#include <vector>
+#include <string>
+
 #include "aoc.h"
+
+namespace {
 
 constexpr int NUM_ROUNDS = 40;
 
@@ -14,7 +16,7 @@ auto look_and_say(const std::string& numbers, const int rounds) -> std::string {
     size_t i{0uz};
     while (i < numbers.length()) {
         const char current{numbers[i]};
-        int streak{1uz};
+        int streak{1};
 
         while (++i < numbers.length() && current == numbers[i])
             ++streak;
@@ -24,6 +26,8 @@ auto look_and_say(const std::string& numbers, const int rounds) -> std::string {
 
     return look_and_say(result, rounds - 1);
 }
+
+} // namespace
 
 auto main() -> int {
     std::println("{}", look_and_say(aoc::read_multiline(), NUM_ROUNDS).length());
