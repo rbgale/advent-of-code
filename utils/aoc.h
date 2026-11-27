@@ -1,15 +1,22 @@
 #pragma once
 
+#include <cctype>
 #include <charconv>
+#include <concepts>
+#include <cstddef>
 #include <filesystem>
 #include <format>
 #include <fstream>
-#include <ranges>
+#include <functional>
+#include <istream>
 #include <optional>
+#include <ranges>
 #include <source_location>
 #include <stdexcept>
 #include <string>
 #include <string_view>
+#include <system_error>
+#include <utility>
 #include <vector>
 
 namespace aoc {
@@ -24,15 +31,14 @@ namespace aoc {
     return f;
 }
 
-template <std::integral T>
+template<std::integral T>
 [[nodiscard]] auto modulo(const T dividend, const T modulus) -> T {
     const T result = dividend % modulus;
     return result < 0 ? result + modulus : result;
 }
 
-[[nodiscard]] inline auto read_lines(
-    std::istream&& f = open_source_input(std::source_location::current())
-) -> std::vector<std::string> {
+[[nodiscard]] inline auto read_lines(std::istream&& f = open_source_input(std::source_location::current()))
+        -> std::vector<std::string> {
     std::vector<std::string> lines{};
     std::string line{};
 
@@ -42,9 +48,8 @@ template <std::integral T>
     return lines;
 }
 
-[[nodiscard]] inline auto read_multiline(
-    std::istream&& f = open_source_input(std::source_location::current())
-) -> std::string {
+[[nodiscard]] inline auto read_multiline(std::istream&& f = open_source_input(std::source_location::current()))
+        -> std::string {
     std::string s{};
     std::string line{};
 
@@ -54,20 +59,15 @@ template <std::integral T>
     return s;
 }
 
-[[nodiscard]] inline auto read_sections(
-    std::istream&& f = open_source_input(std::source_location::current())
-) -> std::vector<std::vector<std::string>> {
-    return read_lines(std::move(f))
-        | std::views::split(std::string{})
-        | std::ranges::to<std::vector<std::vector<std::string>>>();
+[[nodiscard]] inline auto read_sections(std::istream&& f = open_source_input(std::source_location::current()))
+        -> std::vector<std::vector<std::string>> {
+    return read_lines(std::move(f)) | std::views::split(std::string{}) |
+           std::ranges::to<std::vector<std::vector<std::string>>>();
 }
 
-template <typename F = std::identity>
-[[nodiscard]] auto parse_lines(
-    F parse={}, std::istream&& f = open_source_input(std::source_location::current())) {
-    return read_lines(std::move(f))
-        | std::views::transform(std::move(parse))
-        | std::ranges::to<std::vector>();
+template<typename F = std::identity>
+[[nodiscard]] auto parse_lines(F parse = {}, std::istream&& f = open_source_input(std::source_location::current())) {
+    return read_lines(std::move(f)) | std::views::transform(std::move(parse)) | std::ranges::to<std::vector>();
 }
 
 [[nodiscard]] inline auto split(std::string_view s, std::string_view delimiter) -> std::vector<std::string> {
@@ -78,17 +78,12 @@ template <typename F = std::identity>
     return s | std::views::split(delimiter) | std::ranges::to<std::vector<std::string>>();
 }
 
-template <typename T>
-concept parsable_number = requires(const char* p, T& v) {
-    std::from_chars(p, p, v);
-};
+template<typename T>
+concept parsable_number = requires(const char* p, T& v) { std::from_chars(p, p, v); };
 
-template <parsable_number T = long long>
-[[nodiscard]] auto try_extract_number(
-    std::string_view s,
-    std::size_t start = 0uz,
-    std::size_t* end_pos = nullptr
-) -> std::optional<T> {
+template<parsable_number T = long long>
+[[nodiscard]] auto try_extract_number(std::string_view s, std::size_t start = 0uz, std::size_t* end_pos = nullptr)
+        -> std::optional<T> {
     start = s.find_first_of("0123456789", start);
 
     if (start == std::string_view::npos)
@@ -109,24 +104,17 @@ template <parsable_number T = long long>
     return value;
 }
 
-template <parsable_number T = long long>
-[[nodiscard]] auto extract_number(
-    std::string_view s,
-    std::size_t start = 0uz,
-    std::size_t* end_pos = nullptr
-) -> T {
+template<parsable_number T = long long>
+[[nodiscard]] auto extract_number(std::string_view s, std::size_t start = 0uz, std::size_t* end_pos = nullptr) -> T {
     if (auto number = try_extract_number<T>(s, start, end_pos))
         return *number;
 
     throw std::invalid_argument(std::format("No numbers found in string '{}'.", s));
 }
 
-template <parsable_number T = long long>
-[[nodiscard]] auto extract_numbers(
-    std::string_view s,
-    std::size_t start = 0uz,
-    std::size_t* end_pos = nullptr
-) -> std::vector<T> {
+template<parsable_number T = long long>
+[[nodiscard]] auto extract_numbers(std::string_view s, std::size_t start = 0uz, std::size_t* end_pos = nullptr)
+        -> std::vector<T> {
     std::vector<T> numbers{};
 
     while (auto maybe_number = try_extract_number<T>(s, start, &start))
@@ -139,13 +127,13 @@ template <parsable_number T = long long>
 }
 
 // hashing method is from boost::hash_combine
-template <typename T>
+template<typename T>
 auto hash_combine(std::size_t& seed, const T& val) -> void {
     seed ^= std::hash<T>{}(val) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
 }
 
 struct PairHash {
-    template <typename T, typename U = T>
+    template<typename T, typename U = T>
     std::size_t operator()(const std::pair<T, U>& p) const {
         std::size_t seed = 0;
         hash_combine(seed, p.first);
@@ -155,4 +143,4 @@ struct PairHash {
     }
 };
 
-}
+} // namespace aoc
