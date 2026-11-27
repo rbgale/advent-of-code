@@ -22,6 +22,7 @@ mkdir -p "$DAY_DIRECTORY"
 
 cat > "$DAY_DIRECTORY/part1.cpp" << 'EOF'
 #include <print>
+
 #include "aoc.h"
 
 auto main() -> int {
