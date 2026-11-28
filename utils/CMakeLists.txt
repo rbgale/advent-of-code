@@ -1,2 +1,2 @@
-add_library(utils INTERFACE)
-target_include_directories(utils INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+add_library(utils STATIC)
+target_sources(utils PUBLIC FILE_SET CXX_MODULES FILES aoc.cppm)

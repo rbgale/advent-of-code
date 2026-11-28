@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 4.5)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -14,6 +14,7 @@ if(APPLE)
             "-L${LLVM_PREFIX}/lib/c++"
             "-Wl,-rpath,${LLVM_PREFIX}/lib/c++"
     )
+    set(CMAKE_CXX_STDLIB_MODULES_JSON "${LLVM_PREFIX}/lib/c++/libc++.modules.json")
 endif()
 
 project(advent-of-code CXX)

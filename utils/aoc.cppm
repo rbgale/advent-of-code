@@ -1,25 +1,7 @@
-#pragma once
+export module aoc;
+import std;
 
-#include <cctype>
-#include <charconv>
-#include <concepts>
-#include <cstddef>
-#include <filesystem>
-#include <format>
-#include <fstream>
-#include <functional>
-#include <istream>
-#include <optional>
-#include <ranges>
-#include <source_location>
-#include <stdexcept>
-#include <string>
-#include <string_view>
-#include <system_error>
-#include <utility>
-#include <vector>
-
-namespace aoc {
+export namespace aoc {
 
 [[nodiscard]] inline auto open_source_input(const std::source_location source) -> std::ifstream {
     const auto path{std::filesystem::path(source.file_name()).parent_path() / "input.txt"};
@@ -89,7 +71,7 @@ template<parsable_number T = long long>
     if (start == std::string_view::npos)
         return std::nullopt;
 
-    if (std::is_signed_v<T> && start > 0 && s[start - 1] == '-' && (start == 1 || !isdigit(s[start - 2])))
+    if (std::is_signed_v<T> && start > 0 && s[start - 1] == '-' && (start == 1 || !std::isdigit(s[start - 2])))
         start -= 1;
 
     T value;
